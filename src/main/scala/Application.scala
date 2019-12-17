@@ -17,4 +17,10 @@ object Application extends App {
   val tableName: String = "beijing_taxi"
 
   val allDataDF: DataFrame = dbManager.loadTable(tableName)
+
+  allDataDF.createOrReplaceTempView("allDataDF_view")
+  val taxiPositions:DataFrame = spark.sql("SELECT ROUND(lng,2) as agg_lng, ROUND(lat,2) as agg_lat, vehicleId, timestamp FROM allDataDF_view WHERE lng >= 116.1 AND lng <= 116.7 AND lat >= 39.7 AND lat <= 40.2")
+
+  taxiPositions.createOrReplaceTempView("taxiPositions_view")
+  val heatmapRectangles:DataFrame = spark.sql("SELECT agg_lng, agg_lat, count(*) as count FROM taxiPositions_view GROUP BY agg_lng, agg_lat ORDER BY agg_lng, agg_lat")
 }
