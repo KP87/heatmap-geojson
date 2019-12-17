@@ -23,4 +23,12 @@ object Application extends App {
 
   taxiPositions.createOrReplaceTempView("taxiPositions_view")
   val heatmapRectangles:DataFrame = spark.sql("SELECT agg_lng, agg_lat, count(*) as count FROM taxiPositions_view GROUP BY agg_lng, agg_lat ORDER BY agg_lng, agg_lat")
+
+  val geoJsonTools: GeoJsonTools = new GeoJsonTools()
+  val gsonTrajectory: JsonObject = geoJsonTools.convertToRectanglesHeatmap(heatmapRectangles)
+
+  val file = new File("rectangles_heatmap.json")
+  val bw = new BufferedWriter(new FileWriter(file))
+  bw.write(gsonTrajectory.toString)
+  bw.close()
 }
