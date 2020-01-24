@@ -1,1 +1,1 @@
-case class Coordinates(lng: Double, lat: Double) {}
+case class Coordinates(lng: Double, lat: Double)

@@ -11,8 +11,11 @@ libraryDependencies ++= Seq(
   "org.apache.spark" %% "spark-core" % "2.4.4" % "provided",
   "org.apache.spark" %% "spark-sql" % "2.4.4" % "provided",
   "org.postgresql" % "postgresql" % "42.2.8",
-  "com.google.code.gson" % "gson" % "2.8.6"
+  "com.google.code.gson" % "gson" % "2.8.6",
+  "com.novocode" % "junit-interface" % "0.11" % Test
 )
+
+testOptions in Test += Tests.Argument(TestFrameworks.JUnit, "-a", "-v", "-s")
 
 assemblyMergeStrategy in assembly := {
   case PathList("org","aopalliance", xs @ _*) => MergeStrategy.last
